@@ -1,7 +1,7 @@
 import express from "express";
-import userRoutes from "./routes/userRoutes.js"
+import userRoutes from "./routes/user.routes.js"
 import { errorHandler } from "./middlewares/errorMiddeware.js";
-import AppError from "./utils/appError.js";
+import AppError from "./utils/AppError.js";
 
 const app = express();
 const PORT = process.env.PORT || 3000;

@@ -5,11 +5,11 @@ import {
   createUser,
   updateUser,
   deleteUser,
-} from "../controllers/user.js"
+} from "../controllers/user.controller.js"
 import {
   validateCreateUser,
   validateUpdateUser,
-} from "../middlewares/userMiddleware.js";
+} from "../middlewares/user.middleware.js";
 
 const router = Router();
 
