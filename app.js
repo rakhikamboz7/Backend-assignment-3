@@ -1,52 +1,23 @@
 import express from "express";
+import userRoutes from "./routes/userRoutes.js"
+import { errorHandler } from "./middlewares/errorMiddeware.js";
+import AppError from "./utils/appError.js";
 
 const app = express();
+const PORT = process.env.PORT || 3000;
+
 app.use(express.json());
 
-let users = [];
+app.use("/api/users", userRoutes);
 
-app.post("/users", (req, res) => {
-  const { name, email } = req.body;
-
-  if (!name || !email) {
-    return res.status(400).send("Missing fields");
-  }
-
-  const user = {
-    id: Date.now(),
-    name,
-    email,
-  };
-
-  users.push(user);
-
-  res.send(user);
+// If a request reaches here, no route matched — treat it as 404
+app.use((req, res) => {
+  res.status(404).send("Route not found");
 });
 
-app.get("/users", (req, res) => {
-  res.send(users);
+// Must be registered last — catches everything passed via next(error)
+app.use(errorHandler);
+
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
 });
-
-app.get("/users/:id", (req, res) => {
-  const user = users.find((u) => u.id == req.params.id);
-
-  if (!user) {
-    return res.status(404).send("User not found");
-  }
-
-  res.send(user);
-});
-
-app.delete("/users/:id", (req, res) => {
-  const index = users.findIndex((u) => u.id == req.params.id);
-
-  if (index === -1) {
-    return res.status(404).send("User not found");
-  }
-
-  users.splice(index, 1);
-
-  res.send("User deleted");
-});
-
-app.listen(3000, () => console.log("Server running"));

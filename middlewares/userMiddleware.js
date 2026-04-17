@@ -26,6 +26,10 @@ export const validateCreateUser = (req, res, next) => {
 export const validateUpdateUser = (req, res, next) => {
   const { name, email } = req.body;
 
+  if(!user) {
+    return next(new AppError("User not found", 404));
+  }
+
   if (!name && !email) {
     return next(new AppError("Provide at least a name or email to update", 400));
   }
